@@ -1,19 +1,16 @@
 class RecipeAppsController < ApplicationController
-  before_action :set_recipe_app, only: [:show, :edit, :update, :destroy]
-
-  # GET /recipe_apps
-  # GET /recipe_apps.json
-  def index
-    @recipe_apps = RecipeApp.all
-  end
+  before_action :set_recipe_app, only: [:show, :edit, :update]
 
   # GET /recipe_apps/1
-  # GET /recipe_apps/1.json
+  # Note: There is no show view. This accomodates rails default routing to the show
+  # view after a create record, and redirects to the index view.
   def show
+    redirect_to recipe_apps_path
   end
 
   # GET /recipe_apps/new
   def new
+    RecipeApp.delete_all
     @recipe_app = RecipeApp.new
   end
 
@@ -22,53 +19,49 @@ class RecipeAppsController < ApplicationController
   end
 
   # POST /recipe_apps
-  # POST /recipe_apps.json
   def create
     @recipe_app = RecipeApp.new(recipe_app_params)
 
     respond_to do |format|
       if @recipe_app.save
-        format.html { redirect_to @recipe_app, notice: 'Recipe app was successfully created.' }
-        format.json { render :show, status: :created, location: @recipe_app }
+        format.html { redirect_to @recipe_app }
       else
         format.html { render :new }
-        format.json { render json: @recipe_app.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # PATCH/PUT /recipe_apps/1
-  # PATCH/PUT /recipe_apps/1.json
   def update
     respond_to do |format|
       if @recipe_app.update(recipe_app_params)
-        format.html { redirect_to @recipe_app, notice: 'Recipe app was successfully updated.' }
-        format.json { render :show, status: :ok, location: @recipe_app }
+        format.html { redirect_to @recipe_app }
       else
         format.html { render :edit }
-        format.json { render json: @recipe_app.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /recipe_apps/1
-  # DELETE /recipe_apps/1.json
-  def destroy
-    @recipe_app.destroy
-    respond_to do |format|
-      format.html { redirect_to recipe_apps_url, notice: 'Recipe app was successfully destroyed.' }
-      format.json { head :no_content }
+  #  # Runs after new or edit, and picks up latest set of food values off recipe_app record
+  def index
+    @recipe_app = RecipeApp.last
+    @page = @recipe_app.page
+    @dish = @recipe_app.dish
+    @ingredients = "#{@recipe_app.ingredient_1},#{@recipe_app.ingredient_2},#{@recipe_app.ingredient_3}"
+    @recipe_apps = RecipeApp.api_records(@page, @dish, @ingredients)
+
+    unless @recipe_apps[0]
+      redirect_to new_recipe_app_path, notice: 'Selection values did not produce any recipe_apps.'
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_recipe_app
-      @recipe_app = RecipeApp.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_recipe_app
+    @recipe_app = RecipeApp.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def recipe_app_params
-      params.require(:recipe_app).permit(:page, :dish, :ingredient_1, :ingredient_2, :ingredient_3)
-    end
+  def recipe_app_params
+    params.require(:recipe_app).permit(:page, :dish, :ingredient_1, :ingredient_2, :ingredient_3)
+  end
 end
