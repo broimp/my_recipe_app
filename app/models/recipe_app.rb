@@ -2,7 +2,9 @@ require 'open-uri'
 
 class RecipeApp < ActiveRecord::Base
   validates :page, numericality: {only_integer: true}
-
+  validates :dish, presence: true
+  validates :ingredient_1, presence: true
+  
   def self.api_records(page, dish, ingredients)
     search = "?i=#{ingredients}&q=#{dish}&p=#{page}"
     Puppy(search)
