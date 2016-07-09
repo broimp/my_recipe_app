@@ -1,16 +1,9 @@
 class RecipeAppsController < ApplicationController
-  before_action :set_recipe_app, only: [:show, :edit, :update]
-
-  # GET /recipe_apps/1
-  # Note: There is no show view. This accomodates rails default routing to the show
-  # view after a create record, and redirects to the index view.
-  def show
-    redirect_to recipe_apps_path
-  end
+  before_action :set_recipe_app, only: [:edit, :update]
 
   # GET /recipe_apps/new
   def new
-    RecipeApp.delete_all
+#    RecipeApp.delete_all
     @recipe_app = RecipeApp.new
   end
 
@@ -21,24 +14,20 @@ class RecipeAppsController < ApplicationController
   # POST /recipe_apps
   def create
     @recipe_app = RecipeApp.new(recipe_app_params)
-
-    respond_to do |format|
-      if @recipe_app.save
-        format.html { redirect_to @recipe_app }
-      else
-        format.html { render :new }
-      end
+    if @recipe_app.save
+      RecipeApp.cleaner(@recipe_app.created_at.to_s.slice(5,2))
+      redirect_to recipe_apps_path
+    else
+      render :new
     end
   end
 
   # PATCH/PUT /recipe_apps/1
   def update
-    respond_to do |format|
-      if @recipe_app.update(recipe_app_params)
-        format.html { redirect_to @recipe_app }
-      else
-        format.html { render :edit }
-      end
+    if @recipe_app.update(recipe_app_params)
+      redirect_to recipe_apps_path
+    else
+      render :edit
     end
   end
 
@@ -51,7 +40,7 @@ class RecipeAppsController < ApplicationController
     @recipe_apps = RecipeApp.api_records(@page, @dish, @ingredients)
 
     unless @recipe_apps[0]
-      redirect_to new_recipe_app_path, notice: 'Selection values did not produce any recipe_apps.'
+      redirect_to new_recipe_app_path, notice: 'Selection values did not produce any recipe hits.'
     end
   end
 

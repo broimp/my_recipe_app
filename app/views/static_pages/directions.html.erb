@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-md-">
+    <div class="form-controll">
+      <p>This application uses the Recipe Puppy API - a searchable index to a variety of recipe
+        sources on the internet. Note: This is a free index.</p>
+
+      <p>The API returns up to 10 references per page per query. You need to tell it which page to retrieve -
+        1 through an unknown number. For example, there might be 40 pages of chicken recipes.</p>
+
+      <p>Select a page number, a dish type such as "entree" or "dessert", and one or more ingredients. If your
+        selection criteria produces no hits, you'll get a message to that effect. There is no harm done.
+        You can change your selection criteria and try again.</p>
+
+      <p>Index references may or may not have an associated graphic picture of the recipe. Usually the references
+        that don't have pictures still refer to a site with recipe directions.</p>
+
+      <p>Lists of returned recipe references are sets of hotlinks. Click on the highlighted labels to route
+        to a given recipe site. Note, all recipe sites are outside of the domain of the app. Some reference
+        links are expired. Welcome to the world of free APIs. ;-)</p>
+
+      <p>Use your browser's Back button to return to the cache of the Recipe Puppy index as you left it.</p>
+
+      <%= link_to "Begin", new_recipe_app_path, class: "btn btn-primary btn-lg btn-block" %>
+
+    <br>
+    </div>
+  </div>
+</div>

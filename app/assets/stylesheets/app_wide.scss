@@ -9,6 +9,17 @@
   background-size: cover;
 }
 
+.static_pages {
+  background: asset_url('Chefs.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 div.transbox {
   margin-top: 10%;
   margin-right: 10%;
@@ -23,5 +34,16 @@ div.transbox {
   border: 1px solid black;
   opacity: 0.96;
   filter: alpha(opacity=60); /* For IE8 and earlier */
-
   }
+
+#static_pages {
+  .center {
+    text-align: center;
+    color: black;
+  }
+}
+
+.navbar-brand {
+  background: url(/Users/bi/workspace/my_recipe_app/app/assets/images/logonew.png) center / contain no-repeat;
+  height: 100%;
+}

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :recipe_apps
-  root 'recipe_apps#new'
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  resources :recipe_apps, except: [:show, :destroy]
+  get 'static_pages/directions', as: 'directions'
+  root 'static_pages#directions'
 end
